@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+// Router
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// Local
+import Header from "./Pages/Shared/Header/Header";
+import LandingPage from "./Pages/Landing Page/LandingPage";
+import Result from "./Pages/Result/Result";
+
+export const API = {
+  planets: "https://findfalcone.herokuapp.com/planets",
+  vechiles: "https://findfalcone.herokuapp.com/vehicles",
+  token: "https://findfalcone.herokuapp.com/token",
+  find: "https://findfalcone.herokuapp.com/find",
+};
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Header />}>
+            <Route path="" element={<LandingPage />} />
+            <Route path="result" element={<Result />} />
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>Falcone or anyone can't be found in here!</p>
+                </main>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

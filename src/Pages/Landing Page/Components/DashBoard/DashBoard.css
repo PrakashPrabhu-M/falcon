@@ -1,0 +1,37 @@
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.reset{
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  text-align: center;
+  transition: 0.2s;
+  background-color: cyan;
+  border-radius: 4px;
+}
+
+.reset:hover{
+  background-color: orange;
+}
+
+.reset-button{
+  content: 'React';
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+  font-weight: bold;
+  font-size: large;
+  transition: color 0.2s;
+}
+
+.reset-button:hover{
+  background-color: inherit;
+  color: snow;
+}

@@ -1,0 +1,126 @@
+// React
+import React, { useState, useEffect } from "react";
+
+// Router
+import { Outlet, Link } from "react-router-dom";
+
+// Local
+import Radio from "./Components/Radiobox";
+
+// API
+import axios from "axios";
+import { API } from "../../App";
+
+// CSS
+import "./LandingPage.css";
+
+export default function LandingPage() {
+  const [PLANETS, setPlanets] = useState(false); //All Planets
+  const [VECHILES, setVechiles] = useState(false); //All vechiles
+  const [planet, setPlanet] = useState({}); //data for selected planets
+  const [vechile, setVechile] = useState({}); //data for selected vechiles
+  let selectedVechile = null;
+  console.log(VECHILES);
+
+  useEffect(
+    () => async () => {
+      const planetsReq = await axios.get(API.planets);
+      const vechilesReq = await axios.get(API.vechiles);
+      const planets = {};
+      for (let i of planetsReq.data) planets[i.name] = { distance: i.distance };
+      setPlanets(planets); // Object of 6 planets
+      const vechiles = {};
+      for (let i of vechilesReq.data)
+        vechiles[i.name] = {
+          total_no: i.total_no,
+          max_distance: i.max_distance,
+          speed: i.speed,
+        };
+      setVechiles(vechiles); // Object of 4 vechiles
+      window.sessionStorage.clear();
+    },
+    []
+  );
+
+  const findHandler = () => {
+    window.sessionStorage.setItem("vechile", JSON.stringify(vechile));
+    window.sessionStorage.setItem("planet", JSON.stringify(planet));
+  };
+
+  const planetHandler = (e) => {
+    const { name, value } = e.target;
+    const cpy = Object.assign({}, planet);
+    cpy[name] = value;
+    setPlanet({ ...cpy });
+  };
+
+  const vechileHandler = (e) => {
+    const { name, value } = e.target;
+    const cpy = Object.assign({}, vechile);
+    cpy[name] = value;
+    if (!selectedVechile) selectedVechile = value;
+    // console.log(name, value)
+    // console.log(VECHILES);
+    let copy=Object.assign({},VECHILES[value]);
+    console.log('copy',copy);
+    copy={...copy,total_no:copy.total_no-1}
+    setVechiles({ ...copy, [value]: {...cpy[name], ...VECHILES[value].total_no - 1} });
+    // setVechile({ ...cpy });
+  };
+
+  return (
+    <>
+      <div>
+        <h3 style={{ textAlign: "center" }}>
+          Select the Planets you want to search!
+        </h3>
+        {PLANETS && VECHILES ? (
+          <div className="dashboard">
+            {["0", "1", "2", "3"].map((item, idx) => (
+              <form key={idx}>
+                <label className="destination" htmlFor={item}>
+                  Destination {+item + 1}
+                </label>
+                <select
+                  name={item}
+                  id={item}
+                  defaultValue="DEFAULT"
+                  onChange={planetHandler}
+                >
+                  <option value="DEFAULT" disabled hidden>
+                    Select an Option
+                  </option>
+                  {Object.keys(PLANETS).map((item) => (
+                    <option value={item} key={`${item}_${idx}`}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <div className="vechiles">
+                  {Object.keys(VECHILES).map((item) => (
+                    <Radio
+                      key={item}
+                      type="radio"
+                      value={item}
+                      quantity={VECHILES[item].total_no}
+                      iden={idx}
+                      onChange={vechileHandler}
+                    />
+                  ))}
+                </div>
+              </form>
+            ))}
+            <Outlet />
+          </div>
+        ) : (
+          <h4>Loading...</h4>
+        )}
+      </div>
+      {PLANETS && VECHILES && (
+        <Link to="result" className="button" onClick={findHandler}>
+          Find falcone!
+        </Link>
+      )}
+    </>
+  );
+}
