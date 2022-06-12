@@ -1,0 +1,36 @@
+h3.button {
+  display: inline;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.2s;
+}
+
+h3.button:hover {
+  cursor: pointer;
+  color: cyan;
+  background-color: blueviolet;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.message {
+  background-color: #ffd500;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.extra-container {
+    margin: 0;
+    padding: 0;
+}
+
+.extra {
+  list-style: none;
+  margin: 0.5rem;
+  font-weight:500;
+}

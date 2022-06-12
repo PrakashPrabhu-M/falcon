@@ -16,34 +16,34 @@ import "./LandingPage.css";
 
 export default function LandingPage() {
   const [PLANETS, setPlanets] = useState(false); //All Planets
-  const [VECHILES, setVechiles] = useState(false); //All vechiles
+  const [VEHICLES, setVechiles] = useState(false); //All vehicles
   const [planet, setPlanet] = useState({}); //data for selected planets
-  const [vechile, setVechile] = useState({}); //data for selected vechiles
+  const [vehicle, setVechile] = useState({}); //data for selected vehicles
   let selectedVechile = null;
-  console.log(VECHILES);
+  console.log(VEHICLES);
 
   useEffect(
     () => async () => {
       const planetsReq = await axios.get(API.planets);
-      const vechilesReq = await axios.get(API.vechiles);
+      const vehiclesReq = await axios.get(API.vehicles);
       const planets = {};
       for (let i of planetsReq.data) planets[i.name] = { distance: i.distance };
       setPlanets(planets); // Object of 6 planets
-      const vechiles = {};
-      for (let i of vechilesReq.data)
-        vechiles[i.name] = {
+      const vehicles = {};
+      for (let i of vehiclesReq.data)
+        vehicles[i.name] = {
           total_no: i.total_no,
           max_distance: i.max_distance,
           speed: i.speed,
         };
-      setVechiles(vechiles); // Object of 4 vechiles
+      setVechiles(vehicles); // Object of 4 vehicles
       window.sessionStorage.clear();
     },
     []
   );
 
   const findHandler = () => {
-    window.sessionStorage.setItem("vechile", JSON.stringify(vechile));
+    window.sessionStorage.setItem("vehicle", JSON.stringify(vehicle));
     window.sessionStorage.setItem("planet", JSON.stringify(planet));
   };
 
@@ -54,17 +54,17 @@ export default function LandingPage() {
     setPlanet({ ...cpy });
   };
 
-  const vechileHandler = (e) => {
+  const vehicleHandler = (e) => {
     const { name, value } = e.target;
-    const cpy = Object.assign({}, vechile);
+    const cpy = Object.assign({}, vehicle);
     cpy[name] = value;
     if (!selectedVechile) selectedVechile = value;
     // console.log(name, value)
-    // console.log(VECHILES);
-    let copy=Object.assign({},VECHILES[value]);
+    // console.log(VEHICLES);
+    let copy=Object.assign({},VEHICLES[value]);
     console.log('copy',copy);
     copy={...copy,total_no:copy.total_no-1}
-    setVechiles({ ...copy, [value]: {...cpy[name], ...VECHILES[value].total_no - 1} });
+    setVechiles({ ...copy, [value]: {...cpy[name], ...VEHICLES[value].total_no - 1} });
     // setVechile({ ...cpy });
   };
 
@@ -74,7 +74,7 @@ export default function LandingPage() {
         <h3 style={{ textAlign: "center" }}>
           Select the Planets you want to search!
         </h3>
-        {PLANETS && VECHILES ? (
+        {PLANETS && VEHICLES ? (
           <div className="dashboard">
             {["0", "1", "2", "3"].map((item, idx) => (
               <form key={idx}>
@@ -96,15 +96,15 @@ export default function LandingPage() {
                     </option>
                   ))}
                 </select>
-                <div className="vechiles">
-                  {Object.keys(VECHILES).map((item) => (
+                <div className="vehicles">
+                  {Object.keys(VEHICLES).map((item) => (
                     <Radio
                       key={item}
                       type="radio"
                       value={item}
-                      quantity={VECHILES[item].total_no}
+                      quantity={VEHICLES[item].total_no}
                       iden={idx}
-                      onChange={vechileHandler}
+                      onChange={vehicleHandler}
                     />
                   ))}
                 </div>
@@ -116,7 +116,7 @@ export default function LandingPage() {
           <h4>Loading...</h4>
         )}
       </div>
-      {PLANETS && VECHILES && (
+      {PLANETS && VEHICLES && (
         <Link to="result" className="button" onClick={findHandler}>
           Find falcone!
         </Link>

@@ -9,7 +9,7 @@ import Result from "./Pages/Result/Result";
 
 export const API = {
   planets: "https://findfalcone.herokuapp.com/planets",
-  vechiles: "https://findfalcone.herokuapp.com/vehicles",
+  vehicles: "https://findfalcone.herokuapp.com/vehicles",
   token: "https://findfalcone.herokuapp.com/token",
   find: "https://findfalcone.herokuapp.com/find",
 };

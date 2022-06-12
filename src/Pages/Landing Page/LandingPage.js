@@ -16,25 +16,26 @@ import "./LandingPage.css";
 
 export default function LandingPage() {
   const [PLANETS, setPlanets] = useState(false); //All Planets
-  const [VECHILES, setVechiles] = useState(false); //All vechiles
+  const [VEHICLES, setVechiles] = useState(false); //All vehicles
   const [planet, setPlanet] = useState({}); //data for selected planets
-  const [vechile, setVechile] = useState({}); //data for selected vechiles
-  // console.log(vechile);
+  const [vehicle, setVechile] = useState({}); //data for selected vehicles
+  const [reset,setReset]=useState(false);
+  // console.log(vehicle);
 
   const getData = async () => {
     const planetsReq = await axios.get(API.planets);
-    const vechilesReq = await axios.get(API.vechiles);
+    const vehiclesReq = await axios.get(API.vehicles);
     const planets = {};
     for (let i of planetsReq.data) planets[i.name] = { distance: i.distance };
     setPlanets(planets); // Object of 6 planets
-    const vechiles = {};
-    for (let i of vechilesReq.data)
-      vechiles[i.name] = {
+    const vehicles = {};
+    for (let i of vehiclesReq.data)
+      vehicles[i.name] = {
         total_no: i.total_no,
         max_distance: i.max_distance,
         speed: i.speed,
       };
-    setVechiles(vechiles); // Object of 4 vechiles
+    setVechiles(vehicles); // Object of 4 vehicles
     // window.sessionStorage.clear();
   };
 
@@ -43,9 +44,9 @@ export default function LandingPage() {
   }, []);
 
   const findHandler = () => {
-    if (Object.keys(vechile).length === 4 && Object.keys(planet).length === 4) {
+    if (Object.keys(vehicle).length === 4 && Object.keys(planet).length === 4) {
       window.location += "result";
-      window.sessionStorage.setItem("vechile", JSON.stringify(vechile));
+      window.sessionStorage.setItem("vehicle", JSON.stringify(vehicle));
       window.sessionStorage.setItem("planet", JSON.stringify(planet));
     } else {
       window.alert("Kindly fill all the data");
@@ -62,27 +63,28 @@ export default function LandingPage() {
     setPlanet(cpy);
   };
 
-  const vechileHandler = (e) => {
-    const { name, value } = e.target; // name -> vechile for ... , value -> vechile name
-    if (name in vechile) {
-      const tot = VECHILES[vechile[name]].total_no;
+  const vehicleHandler = (e) => {
+    const { name, value } = e.target; // name -> vehicle for ... , value -> vehicle name
+    // console.log(reset);
+    if (name in vehicle && !reset) {
+      const tot = VEHICLES[vehicle[name]].total_no;
       const prevVechileData = {
-        ...VECHILES[vechile[name]],
+        ...VEHICLES[vehicle[name]],
         total_no: +tot + 1,
       };
-      const curTot = VECHILES[value].total_no;
-      const vechileData = { ...VECHILES[value], total_no: +curTot - 1 };
+      const curTot = VEHICLES[value].total_no;
+      const vehicleData = { ...VEHICLES[value], total_no: +curTot - 1 };
 
       setVechiles({
-        ...VECHILES,
-        [vechile[name]]: { ...prevVechileData },
-        [value]: { ...vechileData },
+        ...VEHICLES,
+        [vehicle[name]]: { ...prevVechileData },
+        [value]: { ...vehicleData },
       });
     } else {
-      const tot = VECHILES[value].total_no;
-      const vechileData = { ...VECHILES[value], total_no: +tot - 1 };
+      const tot = VEHICLES[value].total_no;
+      const vehicleData = { ...VEHICLES[value], total_no: +tot - 1 };
 
-      setVechiles({ ...VECHILES, [value]: { ...vechileData } });
+      setVechiles({ ...VEHICLES, [value]: { ...vehicleData } });
     }
     setVechile((prevState) => {
       return {
@@ -90,24 +92,28 @@ export default function LandingPage() {
         [name]: value,
       };
     });
+    if (reset) setReset(false);
   };
 
   return (
     <>
       <h3 className="title">Select the planets you want to search</h3>
-      {PLANETS && VECHILES ? (
+      {PLANETS && VEHICLES ? (
         <DashBoard
           destinations={4}
           planets={PLANETS}
-          vechiles={VECHILES}
+          vehicles={VEHICLES}
           planetHandle={planetHandler}
-          vechileHandle={vechileHandler}
-          reset={getData}
+          vehicleHandle={vehicleHandler}
+          reset={() => {
+            getData();
+            setReset(true);
+          }}
         />
       ) : (
         <h4>Loading...</h4>
       )}
-      <a className="bution" onClick={findHandler}>
+      <a className="button" onClick={findHandler}>
         Find Falcone
       </a>
     </>

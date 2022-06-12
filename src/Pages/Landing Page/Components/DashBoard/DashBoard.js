@@ -15,7 +15,7 @@ const DashBoard = (props) => {
   const [vech, setVech] = useState([]);
   const [time, setTime] = useState([]);
 
-  console.log(time);
+  // console.log(time);
 
   const planetSelection = (event, i) => {
     let cpy = [...dest];
@@ -23,14 +23,13 @@ const DashBoard = (props) => {
     setDest(cpy);
   };
 
-  const vechileSelection = (event, i) => {
-    console.log(i);
+  const vehicleSelection = (event, i) => {
     let cpy = [...vech];
     cpy[i] = event.target.value;
     setVech(cpy);
 
     const planetDistance = props.planets[dest[i]].distance;
-    const speed = props.vechiles[cpy[i]].speed;
+    const speed = props.vehicles[cpy[i]].speed;
 
     let time_cpy = [...time];
     time_cpy[i] = planetDistance / speed;
@@ -40,7 +39,7 @@ const DashBoard = (props) => {
   for (let i = 0; i < props.destinations; i++) {
     const temp = [];
     const title = <h3 key={`destination_${i + 1}`}>Destination - {i + 1}</h3>;
-    const timeTaken = <p key={`time_${i + 1}`}>Time taken: {time[i]}</p>;
+    const timeTaken = <p className="time" key={`time_${i + 1}`}>Time taken: {time[i]}</p>;
     const planet = (
       <Selection
         key={`planet_${i + 1}`}
@@ -53,16 +52,16 @@ const DashBoard = (props) => {
       />
     );
 
-    let vechile;
+    let vehicle;
     if (dest[i]) {
-      vechile = (
+      vehicle = (
         <Selection
-          key={`vechile_${i + 1}`}
+          key={`vehicle_${i + 1}`}
           destination={i + 1}
-          vechiles={props.vechiles}
+          vehicles={props.vehicles}
           handler={(event) => {
-            props.vechileHandle(event);
-            vechileSelection(event, i);
+            props.vehicleHandle(event);
+            vehicleSelection(event, i);
           }}
           selectedPlanet={props.planets[dest[i]].distance}
         />
@@ -72,28 +71,24 @@ const DashBoard = (props) => {
     temp.push(title);
     temp.push(timeTaken);
     temp.push(planet);
-    vechile && temp.push(vechile);
+    vehicle && temp.push(vehicle);
     let final = <div key={`destination_${i + 1}`}>{temp}</div>;
     destinations.push(final);
   }
+
+  const reset = () => {
+    setVech([]);
+    setDest([]);
+    setTime([]);
+    props.reset();
+  };
 
   return (
     <>
       <form className="dashboard">
         {" "}
         {destinations}{" "}
-        <div className="reset">
-        <input
-        className="reset-button"
-          type="reset"
-          onClick={() => {
-            setVech([]);
-            setDest([]);
-            setTime([]);
-            props.reset();
-          }}
-        />
-        </div>
+          <input className="reset-button" type="reset" onClick={reset} />
       </form>
       <TimeDisplay time={time} />
     </>

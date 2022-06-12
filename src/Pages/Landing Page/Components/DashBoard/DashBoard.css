@@ -2,36 +2,50 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  flex-direction: row;
 }
 
-.reset{
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
-  text-align: center;
+.time{
+  margin: 0;
+  font-size: small;
+}
+
+.reset {
+  /* text-align: center; */
+  align-self: center;
   transition: 0.2s;
   background-color: cyan;
   border-radius: 4px;
 }
 
-.reset:hover{
+.reset:hover {
   background-color: orange;
 }
 
-.reset-button{
-  content: 'React';
+.reset-button {
   border: none;
   background-color: inherit;
   cursor: pointer;
+  margin-top: 2rem;
   top: 50%;
-  transform: translateY(-50%);
   position: relative;
   font-weight: bold;
   font-size: large;
   transition: color 0.2s;
 }
 
-.reset-button:hover{
-  background-color: inherit;
-  color: snow;
+.reset-button:hover {
+  color: orangered;
+}
+
+@media screen and (max-width: 520px) {
+ .dashboard{
+   flex-direction: column;
+   align-items: center;
+ } 
+ /* .reset{
+   flex-basis: 2vw;
+   max-width: 50vw;
+   margin-top: 2vh;
+ } */
 }

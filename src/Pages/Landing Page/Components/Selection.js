@@ -21,38 +21,38 @@ export default function Selection(props) {
       </select>
     );
   } else {
-    return Object.keys(props.vechiles).map((vechile) => {
+    return Object.keys(props.vehicles).map((vehicle) => {
       return (
-        <div key={`${props.destination}_${vechile}`}>
+        <div key={`${props.destination}_${vehicle}`}>
           <input
             type="radio"
-            id={`${props.destination}_${vechile}`}
+            id={`${props.destination}_${vehicle}`}
             name={`Vechile for ${props.destination}`}
-            value={vechile}
+            value={vehicle}
             onChange={props.handler}
             disabled={
-              props.vechiles[vechile].total_no < 1 ||
-              props.vechiles[vechile].max_distance < props.selectedPlanet
+              props.vehicles[vehicle].total_no < 1 ||
+              props.vehicles[vehicle].max_distance < props.selectedPlanet
             }
             title={
-              props.vechiles[vechile].total_no < 1
+              props.vehicles[vehicle].total_no < 1
                 ? "Out numbered"
-                : props.vechiles[vechile].max_distance < props.selectedPlanet
+                : props.vehicles[vehicle].max_distance < props.selectedPlanet
                 ? "Out of coverage"
-                : vechile
+                : vehicle
             }
           />
           <label
-            htmlFor={`${props.destination}_${vechile}`}
+            htmlFor={`${props.destination}_${vehicle}`}
             title={
-              props.vechiles[vechile].total_no < 1
+              props.vehicles[vehicle].total_no < 1
                 ? "Out numbered"
-                : props.vechiles[vechile].max_distance < props.selectedPlanet
+                : props.vehicles[vehicle].max_distance < props.selectedPlanet
                 ? "Out of coverage"
-                : vechile
+                : vehicle
             }
           >
-            {vechile} ({props.vechiles[vechile].total_no})
+            {vehicle} ({props.vehicles[vehicle].total_no})
           </label>
           <br />
         </div>
@@ -68,17 +68,17 @@ export default function Selection(props) {
   //         <option value={planet}>{planet}</option>
   //       </select>
   //     );
-  //   })(props.vechiles) &&
-  //   Object.keys(props.vechiles).map((vechile) => {
+  //   })(props.vehicles) &&
+  //   Object.keys(props.vehicles).map((vehicle) => {
   //     return (
-  //       <div key={`${props.destination}_${vechile}`}>
+  //       <div key={`${props.destination}_${vehicle}`}>
   //         <input
   //           type="radio"
-  //           id={`${props.destination}_${vechile}`}
+  //           id={`${props.destination}_${vehicle}`}
   //           name={`Vechile for ${props.destination}`}
-  //           value={vechile}
+  //           value={vehicle}
   //         />
-  //         <label htmlFor={`${props.destination}_${vechile}`}>{vechile}</label>
+  //         <label htmlFor={`${props.destination}_${vehicle}`}>{vehicle}</label>
   //         <br />
   //       </div>
   //     );
